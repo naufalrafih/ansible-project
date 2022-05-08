@@ -1,5 +1,20 @@
 ---
 
+
+- name: Plays for the client_basic group
+  hosts: client_basic
+  tasks:
+
+    - name: Enable ufw
+      community.general.ufw:
+        state: enabled
+        logging: on
+
+    - name: Allow SSH for administration
+      community.general.ufw:
+        rule: allow
+        name: OpenSSH
+
 - name: Plays for the client_secure group
   hosts: client_secure
   tasks:
@@ -16,16 +31,59 @@
         rule: allow
         name: OpenSSH
 
-    - name: Configure inbound rules
-      community.general.ufw:
-        rule: deny
-        from_ip: any
-        direction: in
-
     - name: Configure outbound rules
       community.general.ufw:
         rule: allow
         to_ip: '{{ item }}'
         direction: out
-      with_items: "{{ groups['server_restricted'] }}"
-        
+      with_items: "{{ hostvars['server_restricted'].zerotier_member_ip_assignments }}"
+
+- name: Plays for the server_basic group
+  hosts: server_basic
+  tasks:
+
+    - name: Enable ufw
+      community.general.ufw:
+        state: enabled
+        logging: on
+        policy: deny
+        direction: outgoing
+
+    - name: Allow SSH for administration
+      community.general.ufw:
+        rule: allow
+        name: OpenSSH
+    
+    - name: Configure inbound rules
+      community.general.ufw:
+        rule: allow
+        to_port: 80
+        proto: tcp
+        from_ip: '{{ item }}'
+        direction: in
+      with_items: "{{ hostvars['all'].zerotier_member_ip_assignments }}"
+
+- name: Plays for the server_restricted group
+  hosts: server_restricted
+  tasks:
+
+    - name: Enable ufw
+      community.general.ufw:
+        state: enabled
+        logging: on
+        policy: deny
+        direction: outgoing
+
+    - name: Allow SSH for administration
+      community.general.ufw:
+        rule: allow
+        name: OpenSSH
+    
+    - name: Configure inbound rules
+      community.general.ufw:
+        rule: allow
+        to_port: 80
+        proto: tcp
+        from_ip: '{{ item }}'
+        direction: in
+      with_items: "{{ hostvars['client_secure'].zerotier_member_ip_assignments }}"
