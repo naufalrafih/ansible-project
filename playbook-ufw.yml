@@ -36,7 +36,7 @@
         rule: allow
         to_ip: '{{ item }}'
         direction: out
-      with_items: "{{ hostvars['server_restricted'].zerotier_member_ip_assignments }}"
+      with_items: "{{ hostvars['server_restricted'].zerotier_member_ip_assignments[0] }}"
 
 - name: Plays for the server_basic group
   hosts: server_basic
@@ -61,7 +61,7 @@
         proto: tcp
         from_ip: '{{ item }}'
         direction: in
-      with_items: "{{ hostvars['all'].zerotier_member_ip_assignments }}"
+      with_items: "{{ hostvars['all'].zerotier_member_ip_assignments[0] }}"
 
 - name: Plays for the server_restricted group
   hosts: server_restricted
@@ -86,4 +86,4 @@
         proto: tcp
         from_ip: '{{ item }}'
         direction: in
-      with_items: "{{ hostvars['client_secure'].zerotier_member_ip_assignments }}"
+      with_items: "{{ hostvars['client_secure'].zerotier_member_ip_assignments[0] }}"
