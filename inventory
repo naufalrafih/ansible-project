@@ -1,11 +1,13 @@
-[server_basic]
-172.20.0.10
+[server-basic]
+server-basic-1 zerotier_member_ip_assignments='["10.147.17.10"]'
+server-basic-2 zerotier_member_ip_assignments='["10.147.17.20"]'
 
-[server_restricted]
-172.20.0.11
+[server-restricted]
+server-restricted-1 zerotier_member_ip_assignments='["10.147.17.60"]'
 
-[client_basic]
-172.20.0.12
+[client-basic]
+client-basic-1 zerotier_member_ip_assignments='["10.147.17.150"]'
 
-[client_secure]
-172.20.0.13
+[client-secure]
+client-secure-1 zerotier_member_ip_assignments='["10.147.17.251"]'
+client-secure-2 zerotier_member_ip_assignments='["10.147.17.252"]'

@@ -1,0 +1,7 @@
+- hosts: all
+  vars:
+    zerotier_network_id: a0cbf4b62a2751e1
+    zerotier_api_accesstoken: bMcxk1Cbh677EdCEVRYP9PVHZLWuYeAD
+    zerotier_register_short_hostname: true
+  roles:
+    - name: m4rcu5nl.zerotier

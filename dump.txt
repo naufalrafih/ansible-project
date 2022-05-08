@@ -1,0 +1,12 @@
+docker build . -t sdn-image
+docker network create ansible --subnet=172.20.0.0/24
+
+docker run -it --rm --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --device=/dev/net/tun --ip 172.20.0.10 -d --net=ansible -h server-basic-1 --name server-basic-1 sdn-image:latest
+docker run -it --rm --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --device=/dev/net/tun --ip 172.20.0.20 -d --net=ansible -h server-basic-2 --name server-basic-2 sdn-image:latest
+docker run -it --rm --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --device=/dev/net/tun --ip 172.20.0.60 -d --net=ansible -h server-restricted-1 --name server-restricted-1 sdn-image:latest
+docker run -it --rm --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --device=/dev/net/tun --ip 172.20.0.150 -d --net=ansible -h client-basic-1 --name client-basic-1 sdn-image:latest
+docker run -it --rm --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --device=/dev/net/tun --ip 172.20.0.251 -d --net=ansible -h client-secure-1 --name client-secure-1 sdn-image:latest
+docker run -it --rm --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --device=/dev/net/tun --ip 172.20.0.252 -d --net=ansible -h client-secure-2 --name client-secure-2 sdn-image:latest
+
+export ANSIBLE_CONFIG=/home/naufal/Personal/sdn/ansible-project/ansible.cfg
+ansible all -m ping
