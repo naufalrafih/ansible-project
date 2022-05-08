@@ -1,7 +1,11 @@
-[webserver]
-172.17.0.2
+[server_basic]
+172.20.0.10
 
-[pc]
-172.17.0.3
-172.17.0.4
-linux-ssh
+[server_restricted]
+172.20.0.11
+
+[client_basic]
+172.20.0.12
+
+[client_secure]
+172.20.0.13

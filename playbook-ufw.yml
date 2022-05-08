@@ -1,0 +1,31 @@
+---
+
+- name: Plays for the client_secure group
+  hosts: client_secure
+  tasks:
+
+    - name: Enable ufw
+      community.general.ufw:
+        state: enabled
+        logging: on
+        policy: deny
+        direction: outgoing
+
+    - name: Allow SSH for administration
+      community.general.ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: Configure inbound rules
+      community.general.ufw:
+        rule: deny
+        from_ip: any
+        direction: in
+
+    - name: Configure outbound rules
+      community.general.ufw:
+        rule: allow
+        to_ip: '{{ item }}'
+        direction: out
+      with_items: "{{ groups['server_restricted'] }}"
+        
